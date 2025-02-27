@@ -21,22 +21,17 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
         faceAnalyzer = FaceAnalyzer()
         val generateButton = findViewById<Button>(R.id.buttonGenerate)
-        generateButton.setOnClickListener {
-            navigateToResult()
-        }
+        generateButton.setOnClickListener { navigateToResult() }
     }
 
     private fun navigateToResult() {
         PickImageDialog
             .build(PickSetup())
-            .setOnPickResult { result ->
-                onPickResult(result)
-            }.setOnPickCancel {
-                // TODO: do what you have to if user clicked cancel
-            }.show(supportFragmentManager)
+            .setOnPickResult { result -> onPickResult(result) }
+            .setOnPickCancel {}
+            .show(supportFragmentManager)
     }
 
     override fun onPickResult(r: PickResult) {

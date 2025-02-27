@@ -7,9 +7,4 @@ data class Champion(
     val name: String,
     val title: String,
     val tags: List<String>,
-    val imageUrl: ChampionImage,
 ) : Serializable
-
-data class ChampionImage(
-    val full: String,
-)
