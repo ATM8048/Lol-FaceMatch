@@ -1,5 +1,6 @@
 package ch.zli.lolfacematch
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -20,6 +21,7 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         faceAnalyzer = FaceAnalyzer()
         val generateButton = findViewById<Button>(R.id.buttonGenerate)
         generateButton.setOnClickListener {
@@ -38,27 +40,46 @@ class MainActivity :
     }
 
     override fun onPickResult(r: PickResult) {
-        Log.d("Test", r.bitmap.toString())
         if (r.error == null) {
             Log.d("ImagePicker", "Bild erfolgreich ausgewählt!")
-            Log.d("ImagePicker", "Bitmap vorhanden: ${r.bitmap != null}")
-
             if (r.bitmap != null) {
                 faceAnalyzer.analyzeFace(
                     r.bitmap,
                     0,
                     onResult = { faces ->
-                        Log.d("FaceAnalyzer", "Gesichter erkannt: ${faces.size}")
-                        for (face in faces) {
-                            val faceFeatures = faceAnalyzer.getFaceFeatures(face)
+                        if (faces.isNotEmpty()) {
+                            val faceFeatures = faceAnalyzer.getFaceFeatures(faces[0])
+                            val fetcher = ChampionFetcher()
+
+                            fetcher.fetchChampions { champions ->
+                                if (champions != null) {
+                                    val randomChamp =
+                                        fetcher.getRandomChampion(
+                                            faceFeatures.smilingProbability,
+                                            faceFeatures.leftEyeOpenProbability,
+                                            faceFeatures.rightEyeOpenProbability,
+                                            faceFeatures.headEulerAngleY,
+                                        )
+
+                                    if (randomChamp != null) {
+                                        // 🛠️ Champion an ResultActivity senden
+                                        Log.d("Champion", randomChamp.name)
+                                        val intent = Intent(this, ResultActivity::class.java)
+                                        intent.putExtra("champion", randomChamp)
+                                        startActivity(intent)
+                                    } else {
+                                        Log.e("Champion", "Kein Champion verfügbar")
+                                    }
+                                } else {
+                                    Log.e("Champion", "Fehler beim Laden der Champions")
+                                }
+                            }
                         }
                     },
                     onFailure = { exception ->
                         Log.e("FaceAnalyzer", "Fehler bei der Gesichtserkennung", exception)
                     },
                 )
-            } else {
-                Log.e("ImagePicker", "Kein Bitmap erhalten!")
             }
         } else {
             Log.e("ImagePicker", "Fehler beim Bildauswählen: ${r.error.message}")
