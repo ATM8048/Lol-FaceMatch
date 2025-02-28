@@ -1,7 +1,7 @@
 # Lol-FaceMatch
 ## Dein Gesicht, Dein Champion
 ## Zli Moudl 335
-## Link Seite: https://github.com/ATM8048/Lol-FaceMatch.io
+## Link Github Pages (For App info): https://atm8048.github.io/Lol-FaceMatch/
 ### The Api, Dependency that are used:
 1. Api for Lol Champions: https://ddragon.leagueoflegends.com/cdn/14.3.1/data/en_US/champion.json 
 2. DialogFragment for Camera and Gallery: https://github.com/jrvansuita/PickImage
