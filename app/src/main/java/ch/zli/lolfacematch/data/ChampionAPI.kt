@@ -1,4 +1,4 @@
-package ch.zli.lolfacematch
+package ch.zli.lolfacematch.data
 
 import retrofit2.Call
 import retrofit2.http.GET

@@ -1,4 +1,4 @@
-package ch.zli.lolfacematch
+package ch.zli.lolfacematch.data
 
 import java.io.Serializable
 

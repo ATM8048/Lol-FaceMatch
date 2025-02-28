@@ -1,4 +1,4 @@
-package ch.zli.lolfacematch
+package ch.zli.lolfacematch.data
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ChampionFetcher {
     private var api: ChampionAPI
-    private var champions: List<Champion> = emptyList() // 🛠️ Jetzt änderbar
+    private var champions: List<Champion> = emptyList()
 
     init {
         val retrofit =
@@ -21,7 +21,7 @@ class ChampionFetcher {
         api = retrofit.create(ChampionAPI::class.java)
     }
 
-    fun fetchChampions(callback: (List<Champion>?) -> Unit) {
+    fun fetchChampionsData(callback: (List<Champion>?) -> Unit) {
         val call = api.getChampions()
 
         call.enqueue(
@@ -52,19 +52,13 @@ class ChampionFetcher {
         )
     }
 
-    fun getRandomChampion(
-        smile: Float,
-        leftEyeOpen: Float,
-        rightEyeOpen: Float,
-        headTiltY: Float,
-    ): Champion? { // 🛠️ Kann jetzt `null` zurückgeben
-        if (champions.isEmpty()) return null // 🚨 Falls Champions noch nicht geladen sind, vermeide Absturz!
-
+    fun getRandomChampion(faceFeatures: FaceFeatures): Champion {
         val filteredChampions =
             when {
-                smile > 0.7 -> champions.filter { "Support" in it.tags || "Mage" in it.tags }
-                headTiltY < -10 -> champions.filter { "Fighter" in it.tags || "Tank" in it.tags }
-                leftEyeOpen > 0.5 && rightEyeOpen > 0.5 -> champions.filter { "Assassin" in it.tags }
+                faceFeatures.smilingProbability > 0.7 -> champions.filter { "Support" in it.tags || "Mage" in it.tags }
+                faceFeatures.headEulerAngleY < -10 -> champions.filter { "Fighter" in it.tags || "Tank" in it.tags }
+                faceFeatures.leftEyeOpenProbability > 0.5 -> champions.filter { "Assassin" in it.tags }
+                faceFeatures.rightEyeOpenProbability > 0.5 -> champions.filter { "Marksman" in it.tags }
                 else -> champions
             }
 
