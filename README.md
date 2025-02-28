@@ -1,6 +1,7 @@
 # Lol-FaceMatch
 ## Dein Gesicht, Dein Champion
 ## Zli Moudl 335
+## Link Seite: https://github.com/ATM8048/Lol-FaceMatch.io
 ### The Api, Dependency that are used:
 1. Api for Lol Champions: https://ddragon.leagueoflegends.com/cdn/14.3.1/data/en_US/champion.json 
 2. DialogFragment for Camera and Gallery: https://github.com/jrvansuita/PickImage
@@ -16,4 +17,4 @@ The Plugin run automatically and the ktlint-gradle can be run with ./gradlew ktl
 4. in ChampionFetcher is getChampionDetail() not implemented bcs is implemented the getRandomChampion()
 5. Added ChampionApi, ChampionResponse, their are no in the planning.
 6. The criterion: (Verwenden von Hintergrundoperationen (z. B. Services, Notifications, ...)) is not implemented
-7. 
+7. Champion Data Class has more properties that in the planning like tags.
